@@ -1,0 +1,5 @@
+<div class="item">
+  <span class="name">{{ product().name }}</span>
+  <span class="price">{{ product().price }} zł</span>
+  <button matButton="filled" (click)="add.emit(product())">Dodaj do koszyka</button>
+</div>

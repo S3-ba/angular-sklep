@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      primary: mat.$cyan-palette,    // cyjan: główne kolory
+      tertiary: mat.$orange-palette  // pomarańcz: akcenty
+    ),
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+:root {
+  --cyan: #00acc1;
+  --cyan-dark: #00838f;
+  --cyan-light: #e0f7fa;
+  --orange: #ff7a1a;
+  --orange-dark: #e65100;
+}
+
+body {
+  margin: 0;
+  background: #f1fbfc;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color: #1c2b2e;
+}
+
+.panel {
+  background: white;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 131, 143, 0.12);
+}

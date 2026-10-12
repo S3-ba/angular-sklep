@@ -1,0 +1,47 @@
+h2 {
+  margin-top: 0;
+  color: var(--orange-dark);
+  letter-spacing: 2px;
+}
+
+.empty {
+  color: #78909c;
+  font-style: italic;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px dashed #b2ebf2;
+}
+
+.name {
+  flex: 1;
+}
+
+.price {
+  font-weight: 600;
+}
+
+button {
+  --mat-button-outlined-label-text-color: var(--orange-dark);
+  --mat-button-outlined-outline-color: var(--orange);
+}
+
+hr {
+  border: none;
+  border-top: 2px solid var(--cyan);
+  margin: 1rem 0 0.5rem;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+
+  strong {
+    color: var(--orange-dark);
+  }
+}

@@ -1,0 +1,15 @@
+<hr>
+<h2>KOSZYK</h2>
+@if (items().length === 0) {
+  <p class="empty">Koszyk jest pusty.</p>
+} @else {
+  @for (item of items(); track $index) {
+    <div class="row">
+      <span class="name">{{ item.name }}</span>
+      <span class="price">{{ item.price }} zł</span>
+      <button matButton="outlined" (click)="remove.emit($index)">Usuń</button>
+    </div>
+  }
+  <hr>
+  <p class="total">RAZEM <strong>{{ total() }} zł</strong></p>
+}

@@ -1,0 +1,5 @@
+<h2>Produkty</h2>
+    @for (product of products(); track product.id) {
+        <app-product-item [product]="product" (add)="add.emit($event)"/>
+    }
+
