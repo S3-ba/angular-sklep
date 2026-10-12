@@ -1,44 +1,54 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { Product } from '../product';
+import { Injectable, signal } from '@angular/core';
 
 export interface CartItem {
-  product: Product;
+  id: number;
+  name: string;
+  price: number;
   quantity: number;
+  image: string;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class CartService {
-  readonly items = signal<CartItem[]>([]);
+  private itemsSignal = signal<CartItem[]>([]);
+  readonly items = this.itemsSignal.asReadonly();
 
-  readonly count = computed(() => this.items().reduce((s, i) => s + i.quantity, 0));
-  readonly total = computed(() => this.items().reduce((s, i) => s + i.quantity * i.product.price, 0));
-
-  add(product: Product) {
-    this.items.update(items => {
-      const existing = items.find(i => i.product.id === product.id);
-      return existing
-        ? items.map(i => i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i)
-        : [...items, { product, quantity: 1 }];
-    });
+  addToCart(product: CartItem) {
+    const currentItems = this.itemsSignal();
+    const existingIndex = currentItems.findIndex(item => item.id === product.id);
+    if (existingIndex > -1) {
+      const updated = [...currentItems];
+      updated[existingIndex].quantity += 1;
+      this.itemsSignal.set(updated);
+    } else {
+      this.itemsSignal.set([...currentItems, { ...product, quantity: 1 }]);
+    }
   }
 
-  increase(id: number) {
-    this.items.update(items =>
-      items.map(i => i.product.id === id ? { ...i, quantity: i.quantity + 1 } : i));
+  increaseQuantity(productId: number) {
+    this.itemsSignal.update(items =>
+      items.map(item => item.id === productId ? { ...item, quantity: item.quantity + 1 } : item)
+    );
   }
 
-  decrease(id: number) {
-    this.items.update(items =>
-      items
-        .map(i => i.product.id === id ? { ...i, quantity: i.quantity - 1 } : i)
-        .filter(i => i.quantity > 0));
+  decreaseQuantity(productId: number) {
+    this.itemsSignal.update(items =>
+      items.map(item => {
+        if (item.id === productId && item.quantity > 1) {
+          return { ...item, quantity: item.quantity - 1 };
+        }
+        return item;
+      })
+    );
   }
 
-  remove(id: number) {
-    this.items.update(items => items.filter(i => i.product.id !== id));
+  removeItem(productId: number) {
+    this.itemsSignal.update(items => items.filter(item => item.id !== productId));
   }
 
-  clear() {
-    this.items.set([]);
+  getTotalPrice(): number {
+    return this.itemsSignal().reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 }
