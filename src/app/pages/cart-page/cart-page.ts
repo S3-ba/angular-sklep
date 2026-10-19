@@ -1,9 +1,18 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CartComponent } from '../../cart/cart.component';
 
 @Component({
-  imports: [],
   selector: 'app-cart-page',
-  styleUrl: './cart-page.scss',
-  templateUrl: './cart-page.html',
+  standalone: true,
+  imports: [CommonModule, CartComponent],
+  template: `
+    <div class="page-container">
+      <app-cart></app-cart>
+    </div>
+  `,
+  styles: [`
+    .page-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+  `]
 })
-export class CartPage {}
+export class CartPageComponent {}
