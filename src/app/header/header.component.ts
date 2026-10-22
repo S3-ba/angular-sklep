@@ -16,7 +16,7 @@ import { CartService } from '../services/cart.service';
       <nav class="nav-links">
         <a mat-button routerLink="/">Strona Główna</a>
         <a mat-button routerLink="/cart" class="cart-btn">
-          <mat-icon [matBadge]="cartService.items().length" matBadgeColor="accent">shopping_cart</mat-icon>
+          <mat-icon [matBadge]="cartService.getTotalQuantity()" matBadgeColor="accent">shopping_cart</mat-icon>
           Koszyk
         </a>
       </nav>

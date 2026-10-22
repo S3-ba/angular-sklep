@@ -20,7 +20,10 @@ export class CartService {
     const existingIndex = currentItems.findIndex(item => item.id === product.id);
     if (existingIndex > -1) {
       const updated = [...currentItems];
-      updated[existingIndex].quantity += 1;
+      updated[existingIndex] = {
+        ...updated[existingIndex],
+        quantity: updated[existingIndex].quantity + 1
+      };
       this.itemsSignal.set(updated);
     } else {
       this.itemsSignal.set([...currentItems, { ...product, quantity: 1 }]);
@@ -50,5 +53,9 @@ export class CartService {
 
   getTotalPrice(): number {
     return this.itemsSignal().reduce((sum, item) => sum + item.price * item.quantity, 0);
+  }
+
+  getTotalQuantity(): number {
+    return this.itemsSignal().reduce((sum, item) => sum + item.quantity, 0);
   }
 }

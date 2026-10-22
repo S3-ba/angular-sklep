@@ -17,4 +17,4 @@ import { HeaderComponent } from './header/header.component';
     main { min-height: calc(100vh - 70px); }
   `]
 })
-export class AppComponent {}
+export class App {}

@@ -26,14 +26,19 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
           <div class="info-container">
             <h1>{{ product.name }}</h1>
             <p class="price">{{ product.price }} PLN</p>
+            
             <div class="rating">
-              <mat-icon color="accent">star</mat-icon>
-              <mat-icon color="accent">star</mat-icon>
-              <mat-icon color="accent">star</mat-icon>
-              <mat-icon color="accent">star</mat-icon>
-              <mat-icon color="disabled">star</mat-icon>
-              <span>(4.0 / 5.0)</span>
+              @for (star of [1, 2, 3, 4, 5]; track star) {
+                <mat-icon 
+                  class="star-icon" 
+                  [class.filled]="star <= userRating"
+                  (click)="rateProduct(star)">
+                  star
+                </mat-icon>
+              }
+              <span class="rating-text">({{ userRating }}.0 / 5.0) - Twoja ocena</span>
             </div>
+
             <p class="description">{{ product.description }}</p>
             
             <button mat-raised-button color="primary" (click)="addToCart(product)">
@@ -68,6 +73,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     .info-container { flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 16px; }
     .price { font-size: 1.8rem; font-weight: bold; color: var(--cyan, #00acc1); }
     .rating { display: flex; align-items: center; gap: 4px; }
+    .star-icon { cursor: pointer; color: #e0e0e0; transition: transform 0.1s, color 0.2s; }
+    .star-icon.filled { color: #ffb400; }
+    .star-icon:hover { transform: scale(1.2); }
+    .rating-text { margin-left: 8px; font-weight: 500; color: #555; }
     .carousel-section { margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; }
     .carousel-list { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 10px; }
     .mini-card { min-width: 180px; padding: 12px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; text-align: center; transition: 0.2s; }
@@ -83,6 +92,7 @@ export class ProductDetailComponent {
 
   product: ProductItem | undefined;
   otherProducts: ProductItem[] = [];
+  userRating: number = 4; // Domyślna ocena
 
   constructor() {
     this.route.paramMap.subscribe(params => {
@@ -90,6 +100,11 @@ export class ProductDetailComponent {
       this.product = this.productService.getProductById(id);
       this.otherProducts = this.productService.getProducts().filter(p => p.id !== id);
     });
+  }
+
+  rateProduct(stars: number) {
+    this.userRating = stars;
+    this.snackBar.open(`Dziękujemy za ocenę: ${stars}/5 gwiazdek!`, 'OK', { duration: 2000 });
   }
 
   addToCart(product: ProductItem) {
